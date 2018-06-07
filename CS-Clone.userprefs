@@ -1,11 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ShootableObj.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Recoil.cs">
     <Files>
       <File FileName="Assets\Scripts\CrosshairScript.cs" Line="5" Column="29" />
-      <File FileName="Assets\Scripts\Shooting.cs" Line="52" Column="1" />
+      <File FileName="Assets\Scripts\Shooting.cs" Line="60" Column="5" />
+      <File FileName="Assets\Scripts\Recoil.cs" Line="31" Column="29" />
       <File FileName="Assets\Scripts\ShootableObj.cs" Line="11" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>bulletsRemaining</Value>
+          <Value>recoilcomponent</Value>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

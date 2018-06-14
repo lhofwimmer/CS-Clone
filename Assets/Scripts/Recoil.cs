@@ -3,43 +3,42 @@ using System.Collections;
 
 public class Recoil : MonoBehaviour
 {
-	private float recoil = 0.0f;
-	private float maxRecoil_x = -20f;
-	private float maxRecoil_y = 10f;
-	private float recoilSpeed = 2f;
+	public GameObject recoilMod;
+	public GameObject weapon;
+	public float maxRecoil_x = -20f;
+	public float recoilSpeed = 10f;
+	public float recoil = 0.0f;
+	private Camera recoilCam;
 
-	public void StartRecoil (float recoilParam, float maxRecoil_xParam, float recoilSpeedParam)
+	void Start()
 	{
-		// in seconds
-		recoil = recoilParam;
-		maxRecoil_x = maxRecoil_xParam;
-		recoilSpeed = recoilSpeedParam;
-		maxRecoil_y = Random.Range(-1, 1);
+		recoilCam = recoilMod.GetComponent<Camera> ();
 	}
 
-	private void recoiling ()
+	void Update()
 	{
-		if (recoil > 0f) {
-
-		//Quaternion oldrotation = Quaternion.Euler (Camera.main.transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z);
-		//Quaternion newrotation = Quaternion.Euler (Camera.main.transform.eulerAngles.x+10, 0, Camera.main.transform.eulerAngles.z);
-
-		//Camera.main.transform.localRotation = Quaternion.Slerp (oldrotation, newrotation, 0.5f);
-			Quaternion maxRecoil = Quaternion.Euler (maxRecoil_x, maxRecoil_y, 0f);
-			// Dampen towards the target rotation
-			transform.localRotation = Quaternion.Slerp (transform.localRotation, maxRecoil, Time.deltaTime * recoilSpeed);
-			recoil -= Time.deltaTime;
-			maxRecoil_x += 10;
-		} //else {
-			//recoil = 0f;
-			// Dampen towards the target rotation
-			//transform.localRotation = Quaternion.Slerp (transform.localRotation, Quaternion.identity, Time.deltaTime * recoilSpeed / 2);
-		//}
-	}
-
-	// Update is called once per frame
-	void Update ()
-	{
+		if(Input.GetButton ("Fire1"))
+		{
+			recoil += 0.1f;
+		}
 		recoiling ();
+	}
+
+	void recoiling()
+	{
+		if(recoil > 0)
+		{
+			Quaternion maxRecoil = Quaternion.Euler (maxRecoil_x, 0, 0);
+			recoilCam.transform.rotation = Quaternion.Slerp (recoilCam.transform.rotation, maxRecoil, Time.deltaTime * recoilSpeed);
+			//weapon.transform.localEulerAngles.x = recoilCam.transform.localEulerAngles.x;
+			recoil -= Time.deltaTime;
+		}
+		else
+		{
+			recoil = 0;
+			Quaternion minRecoil = Quaternion.Euler (0, 0, 0);
+			recoilCam.transform.rotation = Quaternion.Slerp (recoilCam.transform.rotation , minRecoil, Time.deltaTime * recoilSpeed);
+			//weapon.transform.localEulerAngles.x = recoilCam.transform.localEulerAngles.x;
+		}
 	}
 }

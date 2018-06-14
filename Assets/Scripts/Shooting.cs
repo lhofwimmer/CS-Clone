@@ -24,25 +24,18 @@ public class Shooting : MonoBehaviour {
 
 	private bool reloading = false;
 
+	public GameObject bulletHole;
 
-
-	public Recoil recoilComponent;
-	private Recoil recoilref = null;
-
-	private float recoil = 0.0f;
-	private float maxRecoil_x = -20f;
-	private float maxRecoil_y = 10f;
-	private float recoilSpeed = 2f;
-
+	public float maxRecoil_x = -20f;
+	public float recoilSpeed = 10f;
+	public float recoil = 0.0f;
 	// Use this for initialization
 	void Start () {
 		gunAudio = GetComponent<AudioSource> ();
 		fpsCamera = GetComponentInParent<Camera> ();
-
-		//recoilref = recoilComponent.GetComponent<Recoil> ();
-		//recoilref.SetRecoil (0.2f,-10f,10f);
 	}
-	
+
+	float yrecoil = fpsCamera.transform.forward.y-10;
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButton ("Fire1") && Time.time > nextFire && magazineSize > 0 && reloading == false) 
@@ -55,8 +48,10 @@ public class Shooting : MonoBehaviour {
 
 			updateMagazine ();
 
+			yrecoil += 10;
+			Vector3 gunRaycast = new Vector3 (fpsCamera.transform.forward.x, yrecoil,fpsCamera.transform.forward.z);
 
-			if (Physics.Raycast (rayOrigin, fpsCamera.transform.forward, out hit, weaponRange)) 
+			if (Physics.Raycast (rayOrigin, gunRaycast, out hit, weaponRange)) 
 			{
 				ShootableObj health = hit.collider.GetComponent<ShootableObj> ();
 
@@ -64,10 +59,13 @@ public class Shooting : MonoBehaviour {
 					health.Damage (damage);
 				}
 
-				if (hit.rigidbody != null) {
+				if (hit.rigidbody != null) 
+				{
 					hit.rigidbody.AddForce (-hit.normal * hitForce);
 				}
+				Instantiate (bulletHole, hit.point,Quaternion.identity);
 			}
+
 
 		}
 
@@ -76,9 +74,11 @@ public class Shooting : MonoBehaviour {
 			StartCoroutine(reloadGun ());
 		}
 
+		if(Input.GetMouseButtonUp(0) && magazineSize > 0 && reloading == false)
+		{
+			
+		}
 	}
-
-
 
 	void updateMagazine()
 	{
